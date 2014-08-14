@@ -1,0 +1,119 @@
+USE Workman
+GO
+
+IF EXISTS(SELECT name FROM sysobjects WHERE name = 'Delete@SINGULARNAME@' AND type = 'P')
+   DROP PROCEDURE Delete@SINGULARNAME@
+GO
+
+CREATE PROCEDURE Delete@SINGULARNAME@
+(
+@@ID@ @IDSQLTYPE@,
+@retval int output
+)
+AS DELETE @TABLENAME@ 
+WHERE @ID@=@@ID@
+
+SELECT @retval = 1
+GO
+
+
+
+IF EXISTS(SELECT name FROM sysobjects WHERE name = 'Insert@SINGULARNAME@' AND type = 'P')
+   DROP PROCEDURE Insert@SINGULARNAME@
+GO
+
+CREATE PROCEDURE Insert@SINGULARNAME@
+(
+$@@FIELD@ @SQLTYPE@,
+$@@LASTFIELD@ @LASTSQLTYPE@,
+@retval int output
+)
+AS INSERT INTO @TABLENAME@
+(
+$@FIELD@ ,
+$@LASTFIELD@
+)
+VALUES     
+(
+$@@FIELD@ ,
+$@@LASTFIELD@
+
+)
+SELECT @retval = @@IDENTITY
+GO
+
+
+
+IF EXISTS(SELECT name FROM sysobjects WHERE name = 'Edit@SINGULARNAME@' AND type = 'P')
+   DROP PROCEDURE Edit@SINGULARNAME@
+GO
+
+CREATE PROCEDURE Edit@SINGULARNAME@
+(
+@@ID@ @IDSQLTYPE@,
+$@@FIELD@ @SQLTYPE@,
+$@@LASTFIELD@ @LASTSQLTYPE@,
+@retval int output
+)
+AS
+UPDATE @TABLENAME@
+SET 
+$@FIELD@=@@FIELD@,
+$@LASTFIELD@=@@LASTFIELD@
+WHERE @ID@=@@ID@
+
+SELECT @retval=@@ID@
+GO
+
+
+IF EXISTS(SELECT name FROM sysobjects WHERE name = 'Select@SINGULARNAME@' AND type = 'P')
+   DROP PROCEDURE Select@SINGULARNAME@
+GO
+
+CREATE PROCEDURE Select@SINGULARNAME@
+(
+@@ID@ @IDSQLTYPE@
+)
+AS 
+SELECT * FROM @TABLENAME@
+WHERE @ID@=@@ID@
+GO
+
+#IF EXISTS(SELECT name FROM sysobjects WHERE name = 'Select@SINGULARNAME@ByEmployeeRef' AND type = 'P')
+   DROP PROCEDURE Select@SINGULARNAME@ByEmployeeRef
+GO
+
+CREATE PROCEDURE Select@SINGULARNAME@ByEmployeeRef
+(
+@EmployeeRef VarChar(50)
+)
+AS 
+SELECT @TABLENAME@.* FROM @TABLENAME@ INNER JOIN Employees Emps on @TABLENAME@.EmployeeRef=Emps.EmployeeRef
+WHERE @TABLENAME@.EmployeeRef=@EmployeeRef
+GO
+#
+
+^IF EXISTS(SELECT name FROM sysobjects WHERE name = 'Select@TABLENAME@ByClientID' AND type = 'P')
+   DROP PROCEDURE Select@TABLENAME@ByClientID
+GO
+
+CREATE PROCEDURE Select@TABLENAME@ByClientID
+(
+@ClientID Integer
+)
+AS
+SELECT * FROM @TABLENAME@
+WHERE ClientID = @ClientID
+GO
+^
+
+GRANT EXECUTE ON Insert@SINGULARNAME@ TO WorkmanUser
+GRANT EXECUTE ON Delete@SINGULARNAME@ TO WorkmanUser
+GRANT EXECUTE ON Edit@SINGULARNAME@ TO WorkmanUser
+GRANT EXECUTE ON Select@SINGULARNAME@ TO WorkmanUser
+#GRANT EXECUTE ON Select@SINGULARNAME@ByEmployeeRef TO WorkmanUser
+#^GRANT EXECUTE ON Select@TABLENAME@ByClientID TO WorkmanUser
+^
+
+GO
+

@@ -1,0 +1,231 @@
+Option Explicit On
+
+Public Class c@SINGULARNAME@
+
+	Private Const m_ErrorBase as int32 = vbObjectError + @RANDOMNUMBER@
+	Private Const m_modName as string = "WorkmanClasses.@SINGULARNAME@" 
+
+	Protected dbConn As DBConnection
+
+	Private m@SINGULARNAME@ID As @IDFIELDTYPE@
+	$Private m@FIELD@ As @FIELDTYPE@
+	$Private m@LASTFIELD@ As @LASTFIELDTYPE@
+
+~	$Private orig@FIELD@ As @FIELDTYPE@
+	$Private orig@LASTFIELD@ As @LASTFIELDTYPE@
+~
+    Public Event Populated()
+    Public Event Saved()
+
+	Public Sub New()
+		dbConn = New DBConnection
+	End Sub
+
+	Protected Overrides Sub Finalize()
+		dbConn = Nothing
+		MyBase.Finalize()
+	End Sub
+
+	public function RetrieveDataSet(ByVal My@SINGULARNAME@ID As @IDFIELDTYPE@) As DataSet
+
+		Dim ds As DataSet
+	    
+			ds = dbConn.RunSPReturnDS("Select@SINGULARNAME@", _
+					New Object() {mp("@@SINGULARNAME@ID", @adIDFIELDTYPE@, @adIDFIELDLENGTH@, My@SINGULARNAME@ID)})
+
+			Dim dr As DataTableReader
+			dr = ds.CreateDataReader()
+
+			If dr.HasRows Then
+				RetrieveDataSet = ds
+			Else
+				RetrieveDataSet = Nothing
+			End If
+
+		dr = Nothing
+		ds = Nothing
+
+	End Function
+
+^	Public Function RetrieveDataSetByClientID(ByVal MyClientID As Long) As DataSet
+
+		Dim ds As DataSet
+	    
+			ds = dbConn.RunSPReturnDS("Select@TABLENAME@ByClientID", _
+					New Object() {mp("@ClientID", SqlDbType.Int, 8, MyClientID)})
+
+			Dim dr As DataTableReader
+			dr = ds.CreateDataReader()
+
+			If dr.HasRows Then
+				RetrieveDataSetByClientID = ds
+			Else
+				RetrieveDataSetByClientID = Nothing
+			End If
+	
+		dr = Nothing
+		ds = Nothing
+
+	End Function
+^
+
+	Public Function Retrieve(ByVal My@SINGULARNAME@ID As @IDFIELDTYPE@) As Long
+
+		Dim ds As DataSet
+	    
+			ds = dbConn.RunSPReturnDS("Select@SINGULARNAME@", _
+					New Object() {mp("@@SINGULARNAME@ID", @adIDFIELDTYPE@, @adIDFIELDLENGTH@, My@SINGULARNAME@ID)})
+
+				Dim dr As DataTableReader
+				dr = ds.CreateDataReader()
+
+				If dr.HasRows Then
+                dr.Read()
+
+				m@IDPREF@@SINGULARNAME@ID = dr("@SINGULARNAME@ID")
+		$        m@PREF@@FIELD@ = @NULLTOWHAT@(dr("@FIELD@"))
+		$        m@LASTPREF@@LASTFIELD@ = @LASTNULLTOWHAT@(dr("@LASTFIELD@"))
+~		$        orig@FIELD@ = @NULLTOWHAT@(dr("@FIELD@"))
+		$        orig@LASTFIELD@ = @LASTNULLTOWHAT@(dr("@LASTFIELD@"))
+~			
+			End If
+
+			if dr.HasRows then
+    				Retrieve = dr("@SINGULARNAME@ID")
+			        RaiseEvent Populated()
+			else
+				Retrieve = 0
+			end if
+
+			ds = Nothing
+			dr = Nothing
+
+	End Function
+
+	Public ReadOnly Property @SINGULARNAME@ID() As @IDFIELDTYPE@
+		Get
+			@SINGULARNAME@ID = m@IDPREF@@SINGULARNAME@ID
+		End Get
+	End Property
+
+	$Public Property @FIELD@() As @FIELDTYPE@
+		Get
+			@FIELD@ = m@PREF@@FIELD@
+		End Get
+		Set (byval My@FIELD@ As @FIELDTYPE@)
+			m@PREF@@FIELD@ = My@FIELD@
+		end Set
+	End Property
+
+	$Public Property @LASTFIELD@() As @LASTFIELDTYPE@
+		Get
+			@LASTFIELD@ = m@LASTPREF@@LASTFIELD@
+		End Get
+		Set (byval My@LASTFIELD@ As @LASTFIELDTYPE@)
+			m@LASTPREF@@LASTFIELD@ = My@LASTFIELD@
+		End Set
+	End Property
+
+	Public Function Insert($ByVal My@FIELD@ As @FIELDTYPE@, $ ByVal My@LASTFIELD@ As @LASTFIELDTYPE@) AS Long
+
+			if ValidateFieldLengths($My@FIELD@, $My@LASTFIELD@, 0)=true then    
+
+			Insert = dbConn.RunSPReturnInteger("Insert@SINGULARNAME@", _
+					New Object() {$ mp("@@FIELD@", @adFIELDTYPE@, @adFIELDLENGTH@, @WHATTONULL@(My@FIELD@)), _ 
+				   $ mp("@@LASTFIELD@", @adLASTFIELDTYPE@, @adLASTFIELDLENGTH@, @LASTWHATTONULL@(My@LASTFIELD@))})
+
+            RaiseEvent Saved()
+
+			End if    
+
+~    $AddToAuditLog ("@FIELD@", aAudit.AuditAction.AuditInsert, , NullsToEmptyString(My@FIELD@.ToString))
+    $AddToAuditLog ("@LASTFIELD@", aAudit.AuditAction.AuditInsert, , NullsToEmptyString(My@LASTFIELD@.ToString))
+~
+
+		Return Insert
+
+	End Function
+
+	Public Function Update() As Long
+
+
+			if ValidateFieldLengths($m@PREF@@FIELD@, $m@LASTPREF@@LASTFIELD@, m@IDPREF@@SINGULARNAME@ID)=true then    
+
+			Update = dbConn.RunSPReturnInteger("Edit@SINGULARNAME@", _
+					New Object() {mp("@@SINGULARNAME@ID", @adIDFIELDTYPE@, @adIDFIELDLENGTH@, m@IDPREF@@SINGULARNAME@ID), _
+					$ mp("@@FIELD@", @adFIELDTYPE@, @adFIELDLENGTH@, @WHATTONULL@(m@PREF@@FIELD@)), _ 
+					$ mp("@@LASTFIELD@", @adLASTFIELDTYPE@, @adLASTFIELDLENGTH@, @LASTWHATTONULL@(m@LASTPREF@@LASTFIELD@))})
+
+
+            RaiseEvent Saved()
+
+			End if    
+
+~    $AddToAuditLog ("@FIELD@", aAudit.AuditAction.AuditUpdate, NullsToEmptyString(orig@FIELD@.ToString), NullsToEmptyString(m@FIELD@.ToString))
+    $AddToAuditLog ("@LASTFIELD@", aAudit.AuditAction.AuditUpdate, NullsToEmptyString(orig@LASTFIELD@.ToString), NullsToEmptyString(m@LASTFIELD@.ToString))
+~
+
+		Return Update
+	
+	End Function
+
+	Public Function Delete(ByVal My@SINGULARNAME@ID As @IDFIELDTYPE@) As Boolean
+
+			Retrieve (My@SINGULARNAME@ID)
+
+			Delete = dbConn.RunSPReturnInteger("Delete@SINGULARNAME@", _
+					New Object() {mp("@@SINGULARNAME@ID", @adIDFIELDTYPE@, @adIDFIELDLENGTH@, My@SINGULARNAME@ID)})
+
+
+~    $AddToAuditLog ("@FIELD@", aAudit.AuditAction.AuditDelete, m@FIELD@.ToString)
+    $AddToAuditLog ("@LASTFIELD@", aAudit.AuditAction.AuditDelete, m@LASTFIELD@.ToString)
+~
+            RaiseEvent Saved()
+
+		Return Delete
+
+	End Function
+
+	Public Function ValidateFieldLengths($ByVal My@FIELD@ As @FIELDTYPE@, $ ByVal My@LASTFIELD@ As @LASTFIELDTYPE@, ByVal My@SINGULARNAME@ID As @IDFIELDTYPE@) As Boolean
+
+	dim strFailedValidation as string =""
+
+			ValidateFieldLengths=True
+
+		$%    If Not(IsDBNull(My@FIELD@)) then
+				If len(My@FIELD@)>@adFIELDLENGTH@ then
+					ValidateFieldLengths=False
+					strFailedValidation=strFailedValidation & ", @FIELD@ must be no longer than @adFIELDLENGTH@ characters"
+				End If
+			End if
+		%$
+		%    If Not(IsDBNull(My@LASTFIELD@)) then
+				If len(My@LASTFIELD@)>@adLASTFIELDLENGTH@ then
+					ValidateFieldLengths=False
+					strFailedValidation=strFailedValidation & ", @LASTFIELD@ must be no longer than @adLASTFIELDLENGTH@ characters"
+				End If
+			End if
+		%
+			If ValidateFieldLengths=False Then
+				If My@SINGULARNAME@ID>0 Then
+					Throw new ApplicationException("Error: ID = " & My@SINGULARNAME@ID & strFailedValidation & ". " & Err.Description)
+				Else
+					Throw new ApplicationException("@SINGULARNAME@ " & strFailedValidation & ". " & Err.Description)		
+				End If
+			End If
+
+	End Function
+
+~	Private Function AddToAuditLog(ByVal FieldName As String, _
+	                                                ByVal Action As aAudit.AuditAction, _
+	                                                Optional ByVal BeforeValue As String = Nothing, _
+	                                                Optional ByVal AfterValue As String = Nothing) as Boolean
+
+	    Dim myAudit As New aAudit
+	    myAudit.Insert ("@TABLENAME@", FieldName, Action, m@SINGULARNAME@ID, NullsToEmptyString(BeforeValue), NullsToEmptyString(AfterValue))
+	    myAudit = Nothing
+		return True
+	
+	End Function
+~
+End Class
