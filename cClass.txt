@@ -82,16 +82,16 @@ Public Class c@SINGULARNAME@
 				If dr.HasRows Then
                 dr.Read()
 
-				m@IDPREF@@SINGULARNAME@ID = dr("@SINGULARNAME@ID")
-		$        m@PREF@@FIELD@ = @NULLTOWHAT@(dr("@FIELD@"))
-		$        m@LASTPREF@@LASTFIELD@ = @LASTNULLTOWHAT@(dr("@LASTFIELD@"))
-~		$        orig@FIELD@ = @NULLTOWHAT@(dr("@FIELD@"))
-		$        orig@LASTFIELD@ = @LASTNULLTOWHAT@(dr("@LASTFIELD@"))
+				m@IDPREF@@SINGULARNAME@ID = CLng(dr("@SINGULARNAME@ID"))
+		$        m@PREF@@FIELD@ = @STRICTLY@(@NULLTOWHAT@(dr("@FIELD@")))
+		$        m@LASTPREF@@LASTFIELD@ = @STRICTLY@(@LASTNULLTOWHAT@(dr("@LASTFIELD@")))
+~		$        orig@FIELD@ = @STRICTLY@(@NULLTOWHAT@(dr("@FIELD@")))
+		$        orig@LASTFIELD@ = @STRICTLY@(@LASTNULLTOWHAT@(dr("@LASTFIELD@")))
 ~			
 			End If
 
 			if dr.HasRows then
-    				Retrieve = dr("@SINGULARNAME@ID")
+    				Retrieve = CLng(dr("@SINGULARNAME@ID"))
 			        RaiseEvent Populated()
 			else
 				Retrieve = 0
@@ -138,8 +138,8 @@ Public Class c@SINGULARNAME@
 
 			End if    
 
-~    $AddToAuditLog ("@FIELD@", aAudit.AuditAction.AuditInsert, , NullsToEmptyString(My@FIELD@.ToString))
-    $AddToAuditLog ("@LASTFIELD@", aAudit.AuditAction.AuditInsert, , NullsToEmptyString(My@LASTFIELD@.ToString))
+~    $AddToAuditLog ("@FIELD@", aAudit.AuditAction.AuditInsert, , CStr(NullsToEmptyString(My@FIELD@.ToString)))
+    $AddToAuditLog ("@LASTFIELD@", aAudit.AuditAction.AuditInsert, , CStr(NullsToEmptyString(My@LASTFIELD@.ToString)))
 ~
 
 		Return Insert
@@ -161,8 +161,8 @@ Public Class c@SINGULARNAME@
 
 			End if    
 
-~    $AddToAuditLog ("@FIELD@", aAudit.AuditAction.AuditUpdate, NullsToEmptyString(orig@FIELD@.ToString), NullsToEmptyString(m@FIELD@.ToString))
-    $AddToAuditLog ("@LASTFIELD@", aAudit.AuditAction.AuditUpdate, NullsToEmptyString(orig@LASTFIELD@.ToString), NullsToEmptyString(m@LASTFIELD@.ToString))
+~    $AddToAuditLog ("@FIELD@", aAudit.AuditAction.AuditUpdate, CStr(NullsToEmptyString(orig@FIELD@.ToString)), CStr(NullsToEmptyString(m@FIELD@.ToString)))
+    $AddToAuditLog ("@LASTFIELD@", aAudit.AuditAction.AuditUpdate, CStr(NullsToEmptyString(orig@LASTFIELD@.ToString)), CStr(NullsToEmptyString(m@LASTFIELD@.ToString)))
 ~
 
 		Return Update
@@ -173,8 +173,8 @@ Public Class c@SINGULARNAME@
 
 			Retrieve (My@SINGULARNAME@ID)
 
-			Delete = dbConn.RunSPReturnInteger("Delete@SINGULARNAME@", _
-					New Object() {mp("@@SINGULARNAME@ID", @adIDFIELDTYPE@, @adIDFIELDLENGTH@, My@SINGULARNAME@ID)})
+			Delete = CBool(dbConn.RunSPReturnInteger("Delete@SINGULARNAME@", _
+					New Object() {mp("@@SINGULARNAME@ID", @adIDFIELDTYPE@, @adIDFIELDLENGTH@, My@SINGULARNAME@ID)}))
 
 
 ~    $AddToAuditLog ("@FIELD@", aAudit.AuditAction.AuditDelete, m@FIELD@.ToString)
@@ -222,7 +222,7 @@ Public Class c@SINGULARNAME@
 	                                                Optional ByVal AfterValue As String = Nothing) as Boolean
 
 	    Dim myAudit As New aAudit
-	    myAudit.Insert ("@TABLENAME@", FieldName, Action, m@SINGULARNAME@ID, NullsToEmptyString(BeforeValue), NullsToEmptyString(AfterValue))
+	    myAudit.Insert ("@TABLENAME@", FieldName, Action, m@SINGULARNAME@ID, CStr(NullsToEmptyString(BeforeValue)), CStr(NullsToEmptyString(AfterValue)))
 	    myAudit = Nothing
 		return True
 	

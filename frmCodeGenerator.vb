@@ -20,6 +20,7 @@ Friend Class frmCodeGenerator
     Private gAuditNullFunction As String
     Private gAuditNullToWhat As String
     Private vWhatsGoneAlready As Object
+    Private gStrictly As String
 
     Private svr As Server
 
@@ -48,11 +49,11 @@ Friend Class frmCodeGenerator
         End With
 
         For Each db As Microsoft.SqlServer.Management.Smo.Database In svr.Databases
-            If db.Name = "Workman" Then
-                Dim dr As DataRow = dt.NewRow
-                dr("DatabaseName") = db.Name
-                dt.Rows.Add(dr)
-            End If
+            'If db.Name = "Workman" Then
+            Dim dr As DataRow = dt.NewRow
+            dr("DatabaseName") = db.Name
+            dt.Rows.Add(dr)
+            'End If
         Next
         Return dt
     End Function
@@ -183,7 +184,7 @@ Friend Class frmCodeGenerator
             strText = ReplaceText(strText, "@TABLENAME@", strTableDef)
             strText = ReplaceText(strText, "@ID@", dsTable.Tables(0).Columns(0).ColumnName)
 
-            Call SelectTypes(dsTable.Tables(0).Columns(0).DataType, dsTable.Tables(0).Columns(0).MaxLength)
+            Call SelectTypes(dsTable.Tables(0).Columns(0).DataType.FullName, dsTable.Tables(0).Columns(0).MaxLength)
             lngADLength = dsTable.Tables(0).Columns(0).MaxLength
 
             strText = ReplaceText(strText, "@IDFIELDTYPE@", gType)
@@ -213,7 +214,7 @@ Friend Class frmCodeGenerator
                 For f = 1 To lngFldCount - 2
                     strField = dsTable.Tables(0).Columns(f).ColumnName
 
-                    Call SelectTypes(dsTable.Tables(0).Columns(f).DataType, dsTable.Tables(0).Columns(f).MaxLength)
+                    Call SelectTypes(dsTable.Tables(0).Columns(f).DataType.FullName, dsTable.Tables(0).Columns(f).MaxLength)
 
                     lngADLength = dsTable.Tables(0).Columns(f).MaxLength()
 
@@ -228,6 +229,7 @@ Friend Class frmCodeGenerator
                     strToAdd = ReplaceText(strToAdd, "@NULLTOWHAT@", gNullToWhat)
                     strToAdd = ReplaceText(strToAdd, "@WHATTONULL@", gWhatToNull)
                     strToAdd = ReplaceText(strToAdd, "@PHPNULL@", gPHPNullFunction)
+                    strToAdd = ReplaceText(strToAdd, "@STRICTLY@", gStrictly)
 
                     If dblStartPerc > 0 And (dsTable.Tables(0).Columns(f).DataType.ToString <> "System.String") Then
                         'do not add the string
@@ -277,7 +279,11 @@ Friend Class frmCodeGenerator
 
             lngADLength = dsTable.Tables(0).Columns(f).MaxLength
 
-            Call SelectTypes(dsTable.Tables(0).Columns(f).DataType, dsTable.Tables(0).Columns(f).MaxLength)
+
+
+
+
+            Call SelectTypes(dsTable.Tables(0).Columns(f).DataType.FullName, dsTable.Tables(0).Columns(f).MaxLength)
             strText = ReplaceText(strText, "@LASTFIELDTYPE@", gType)
             strText = ReplaceText(strText, "@LASTPREF@", gPref)
             strText = ReplaceText(strText, "@adLASTFIELDLENGTH@", gFieldLength)
@@ -287,6 +293,7 @@ Friend Class frmCodeGenerator
             strText = ReplaceText(strText, "@LASTWHATTONULL@", gWhatToNull)
             strText = ReplaceText(strText, "@LASTPHPNULL@", gPHPNullFunction)
             strText = ReplaceText(strText, "@AUDITWHATTONULL@", gAuditNullFunction)
+            strText = ReplaceText(strText, "@STRICTLY@", gStrictly)
 
             'delete stuff in between % signs for last fields that doesn't relate to string fields
             Do While InStr(strText, stringIndicator) > 0
@@ -454,9 +461,9 @@ ErrorHandler:
 
     End Sub
 
-    Private Sub SelectTypes(ByVal type As System.Type, ByVal maxlength As Int32)
+    Private Sub SelectTypes(ByVal type As String, ByVal maxlength As Int32)
 
-        Select Case type.ToString
+        Select Case type
             Case "System.String"
                 gType = "string"
                 gADType = "SqlDbType.VarChar"
@@ -471,16 +478,18 @@ ErrorHandler:
                 gAuditNullFunction = "EmptyStringToNull"
                 gFieldLength = maxlength
                 gPHPNullFunction = "nullsql"
-            Case "System.DateTime"
-                gType = "date"
+                gStrictly = "CStr"
+            Case "System.Date", "System.DateTime"
+                gType = "Date"
                 gADType = "SqlDbType.DateTime"
-                gSQLType = "datetime"
+                gSQLType = "DateTime"
                 gNullToWhat = "NullsToZeroDate"
                 gAuditNullToWhat = "NullsToEmptyString"
                 gWhatToNull = "ZeroDateToDBNull"
                 gAuditNullFunction = "NullsToEmptyString"
-                gFieldLength = 9
+                gFieldLength = 8
                 gPHPNullFunction = "nullsqldate"
+                gStrictly = "CDate"
             Case "System.Bit", "System.Boolean"
                 gType = "boolean"
                 gADType = "SqlDbType.Bit"
@@ -491,6 +500,7 @@ ErrorHandler:
                 gAuditNullFunction = ""
                 gFieldLength = 1
                 gPHPNullFunction = "nullsql"
+                gStrictly = "CBool"
             Case "System.Double", "System.Decimal"
                 gType = "double"
                 gADType = "SqlDbType.Float"
@@ -501,8 +511,9 @@ ErrorHandler:
                 gAuditNullFunction = "ZeroToEmptyString"
                 gFieldLength = 10
                 gPHPNullFunction = "nullsql"
+                gStrictly = "CDbl"
             Case "System.Int32"
-                gType = "Int32"
+                gType = "Long"
                 gADType = "SqlDbType.Int"
                 gSQLType = "Integer"
                 gWhatToNull = "ZeroToNull"
@@ -511,6 +522,7 @@ ErrorHandler:
                 gAuditNullToWhat = "NullsToZero"
                 gFieldLength = 4
                 gPHPNullFunction = "nullsql"
+                gStrictly = "CLng"
             Case Else
                 Stop
         End Select
