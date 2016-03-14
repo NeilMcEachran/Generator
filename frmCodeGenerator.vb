@@ -12,11 +12,11 @@ Friend Class frmCodeGenerator
     Private gPHPNullFunction As String
     Private gPref As String
     Private gSQLType As String
-    'Private gTableOfTables As String
+    Private gTableOfTables As String
     Private gType As String
     Private gWhatToNull As String
     Private gAuditNullFunction As String
-    'Private gAuditNullToWhat As String
+    Private gAuditNullToWhat As String
     Private vWhatsGoneAlready As Object
     Private gStrictly As String
 
