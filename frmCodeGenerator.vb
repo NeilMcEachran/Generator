@@ -1,24 +1,22 @@
 Option Strict Off
 Option Explicit On
 
-Imports System.Data
-Imports System.Data.OleDb
 Imports System.Data.SqlClient
 Imports Microsoft.SqlServer.Management.Smo
 
 Friend Class frmCodeGenerator
-    Inherits System.Windows.Forms.Form
+    Inherits Form
     Private gADType As String
     Private gFieldLength As String
     Private gNullToWhat As String
     Private gPHPNullFunction As String
     Private gPref As String
     Private gSQLType As String
-    Private gTableOfTables As String
+    'Private gTableOfTables As String
     Private gType As String
     Private gWhatToNull As String
     Private gAuditNullFunction As String
-    Private gAuditNullToWhat As String
+    'Private gAuditNullToWhat As String
     Private vWhatsGoneAlready As Object
     Private gStrictly As String
 
@@ -49,11 +47,9 @@ Friend Class frmCodeGenerator
         End With
 
         For Each db As Microsoft.SqlServer.Management.Smo.Database In svr.Databases
-            'If db.Name = "Workman" Then
             Dim dr As DataRow = dt.NewRow
             dr("DatabaseName") = db.Name
             dt.Rows.Add(dr)
-            'End If
         Next
         Return dt
     End Function
@@ -279,10 +275,6 @@ Friend Class frmCodeGenerator
 
             lngADLength = dsTable.Tables(0).Columns(f).MaxLength
 
-
-
-
-
             Call SelectTypes(dsTable.Tables(0).Columns(f).DataType.FullName, dsTable.Tables(0).Columns(f).MaxLength)
             strText = ReplaceText(strText, "@LASTFIELDTYPE@", gType)
             strText = ReplaceText(strText, "@LASTPREF@", gPref)
@@ -453,7 +445,7 @@ ErrorHandler:
 
         'CreateCode(txtcClassPHPScript.Text, txtCOutputLocation.Text, "c_", "php")
 
-        CreateCode(txtcClassScript.Text, txtCOutputLocation.Text, "c", "vb")
+        CreateCode(txtcClassScript.Text, txtCOutputLocation.Text, "", "vb")
 
         CreateCode(txtSprocs.Text, txtSprocsLocation.Text, "", "", , "sprocs.sql")
 

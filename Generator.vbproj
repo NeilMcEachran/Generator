@@ -98,13 +98,6 @@
     <Reference Include="System.XML">
       <Name>System.XML</Name>
     </Reference>
-    <COMReference Include="ADODB">
-      <Guid>{EF53050B-882E-4776-B643-EDA472E8E3F2}</Guid>
-      <Lcid>0</Lcid>
-      <VersionMajor>2</VersionMajor>
-      <VersionMinor>7</VersionMinor>
-      <WrapperTool>primary</WrapperTool>
-    </COMReference>
     <COMReference Include="Scripting">
       <Guid>{420B2830-E718-11CF-893D-00A0C9054228}</Guid>
       <Lcid>0</Lcid>
