@@ -5,7 +5,7 @@ Namespace Generated
 Public Class @SINGULARNAME@
 
 	Private Const _ErrorBase as int32 = vbObjectError + @RANDOMNUMBER@
-	Private Const _modName as string = "WorkmanClasses.@SINGULARNAME@" 
+	Private Const _modName as string = "Rules.@SINGULARNAME@" 
 
 	Private _@SINGULARNAME@ID As @IDFIELDTYPE@
 	$Private _@FIELD@ As @FIELDTYPE@

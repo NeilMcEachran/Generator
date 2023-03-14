@@ -117,7 +117,7 @@ Friend Class frmCodeGenerator
         Dim blnIncludesClientRef As Boolean = False
 
 
-        conn = New SqlConnection("Data Source='.\SQLEXPRESS';Initial Catalog='" & DatabaseNames.Text & "';Integrated Security=SSPI;")
+        conn = New SqlConnection("Data Source=NM-ENVY\SQLEXPRESS;Initial Catalog='" & "Workman" & "';Integrated Security=SSPI;")
 
         Dim strSQL As String
         strSQL = "select DBTable, EmployeeRefIsPrimaryKey, SingularName, AuditTable, IncludesClientRef from DBTables"
@@ -412,10 +412,7 @@ ErrorHandler:
         txtSprocs.Text = src & "sprocs.txt"
         txtSprocsLocation.Text = src & "sprocs\"
 
-        svr = New Server(".\SQLEXPRESS")
 
-        DatabaseNames.DataSource = getDatabaseList(svr)
-        DatabaseNames.DisplayMember = "DatabaseName"
 
     End Sub
 
@@ -521,10 +518,5 @@ ErrorHandler:
 
     End Sub
 
-    Private Sub DatabaseNames_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles DatabaseNames.Click
 
-        TableNames.DataSource = getTableList(svr.Databases(DatabaseNames.SelectedText))
-        TableNames.DisplayMember = "TableName"
-
-    End Sub
 End Class
