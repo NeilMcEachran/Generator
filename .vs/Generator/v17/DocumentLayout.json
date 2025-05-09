@@ -1,0 +1,68 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\neilm\\OneDrive\\Waterfield Consulting\\Develop\\Generator.NET\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{A5CB41F0-BA77-44BC-AA20-4AB100A8D1EB}|Generator.vbproj|c:\\users\\neilm\\onedrive\\waterfield consulting\\develop\\generator.net\\frmcodegenerator.vb||{2C015C70-C72C-11D0-88C3-00A0C9110049}",
+      "RelativeMoniker": "D:0:0:{A5CB41F0-BA77-44BC-AA20-4AB100A8D1EB}|Generator.vbproj|solutionrelative:frmcodegenerator.vb||{2C015C70-C72C-11D0-88C3-00A0C9110049}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A5CB41F0-BA77-44BC-AA20-4AB100A8D1EB}|Generator.vbproj|C:\\Users\\neilm\\OneDrive\\Waterfield Consulting\\Develop\\Generator.NET\\cclass.txt||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{A5CB41F0-BA77-44BC-AA20-4AB100A8D1EB}|Generator.vbproj|solutionrelative:cclass.txt||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A5CB41F0-BA77-44BC-AA20-4AB100A8D1EB}|Generator.vbproj|C:\\Users\\neilm\\OneDrive\\Waterfield Consulting\\Develop\\Generator.NET\\frmcodegenerator.vb||{2C015C70-C72C-11D0-88C3-00A0C9110049}|Form",
+      "RelativeMoniker": "D:0:0:{A5CB41F0-BA77-44BC-AA20-4AB100A8D1EB}|Generator.vbproj|solutionrelative:frmcodegenerator.vb||{2C015C70-C72C-11D0-88C3-00A0C9110049}|Form"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "frmCodeGenerator.vb",
+              "DocumentMoniker": "C:\\Users\\neilm\\OneDrive\\Waterfield Consulting\\Develop\\Generator.NET\\frmCodeGenerator.vb",
+              "RelativeDocumentMoniker": "frmCodeGenerator.vb",
+              "ToolTip": "C:\\Users\\neilm\\OneDrive\\Waterfield Consulting\\Develop\\Generator.NET\\frmCodeGenerator.vb",
+              "RelativeToolTip": "frmCodeGenerator.vb",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAAiAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003361|",
+              "WhenOpened": "2023-03-14T12:57:48.142Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "cClass.txt",
+              "DocumentMoniker": "C:\\Users\\neilm\\OneDrive\\Waterfield Consulting\\Develop\\Generator.NET\\cClass.txt",
+              "RelativeDocumentMoniker": "cClass.txt",
+              "ToolTip": "C:\\Users\\neilm\\OneDrive\\Waterfield Consulting\\Develop\\Generator.NET\\cClass.txt",
+              "RelativeToolTip": "cClass.txt",
+              "ViewState": "AQIAACEAAAAAAAAAAAAAAA0AAAARAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003109|",
+              "WhenOpened": "2023-03-14T12:55:58.492Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "frmCodeGenerator.vb [Design]",
+              "DocumentMoniker": "C:\\Users\\neilm\\OneDrive\\Waterfield Consulting\\Develop\\Generator.NET\\frmCodeGenerator.vb",
+              "RelativeDocumentMoniker": "frmCodeGenerator.vb",
+              "ToolTip": "C:\\Users\\neilm\\OneDrive\\Waterfield Consulting\\Develop\\Generator.NET\\frmCodeGenerator.vb [Design]",
+              "RelativeToolTip": "frmCodeGenerator.vb [Design]",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003525|",
+              "WhenOpened": "2023-03-14T12:55:40.817Z"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
